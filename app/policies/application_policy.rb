@@ -7,11 +7,11 @@ class ApplicationPolicy
   end
 
   def index?
-    false
+    @current_user.admin?
   end
 
   def show?
-    false
+    @current_user.admin? or @current_user == @user
   end
 
   def create?
@@ -23,7 +23,7 @@ class ApplicationPolicy
   end
 
   def update?
-    false
+    @current_user.admin? or @current_user == @user
   end
 
   def edit?
@@ -31,7 +31,9 @@ class ApplicationPolicy
   end
 
   def destroy?
-    false
+    return false if @current_user == @user
+
+    @current_user.admin?
   end
 
   class Scope
